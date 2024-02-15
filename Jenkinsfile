@@ -42,7 +42,7 @@ pipeline {
         // stage('Terraform Destroy') {
             // steps {
                 // Change directory to the infra folder
-                dir('infra') {
+                //dir('infra') {
                    // Destroy the infrastructure (optional)
                     // sh 'terraform destroy -auto-approve'
                 //}
