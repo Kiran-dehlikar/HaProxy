@@ -24,7 +24,7 @@ pipeline {
                 // Change directory to the infra folder
                 dir('infra') {
                     // Generate an execution plan
-                    sh 'terraform plan -out=tfplan'
+                    sh 'terraform plan'
                 }
             }
         }
@@ -34,7 +34,7 @@ pipeline {
                 // Change directory to the infra folder
                 dir('infra') {
                     // Apply the changes
-                    sh 'terraform apply -auto-approve tfplan'
+                    sh 'terraform apply -auto-approve'
                 }
             }
         }
