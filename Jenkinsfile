@@ -1,6 +1,9 @@
 pipeline {
     agent any
-    
+    environment {
+        AWS_ACCESS_KEY_ID     = credentials('aws-access-key-id')
+        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
+    }
     stages {
         stage('Clone') {
             steps {
@@ -33,7 +36,13 @@ pipeline {
             steps {
                 // Change directory to the infra folder
                 dir('infra') {
-                    // Apply the changes
+                    // Apply the changes using AWS credentials
+                    withCredentials([[
+                        $class: 'AmazonWebServicesCredentialsBinding',
+                        credentialsId: 'Aws-creds',
+                        accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                        secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+                    ]]) {
                     sh 'terraform apply -auto-approve'
                 }
             }
