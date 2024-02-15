@@ -11,29 +11,41 @@ pipeline {
         
         stage('Terraform Init') {
             steps {
-                // Initialize Terraform
-                sh 'terraform init'
+                // Change directory to the infra folder
+                dir('infra') {
+                    // Initialize Terraform
+                    sh 'terraform init'
+                }
             }
         }
 
         stage('Terraform Plan') {
             steps {
-                // Generate an execution plan
-                sh 'terraform plan -out=tfplan'
+                // Change directory to the infra folder
+                dir('infra') {
+                    // Generate an execution plan
+                    sh 'terraform plan -out=tfplan'
+                }
             }
         }
 
         stage('Terraform Apply') {
             steps {
-                // Apply the changes
-                sh 'terraform apply -auto-approve tfplan'
+                // Change directory to the infra folder
+                dir('infra') {
+                    // Apply the changes
+                    sh 'terraform apply -auto-approve tfplan'
+                }
             }
         }
 
         // stage('Terraform Destroy') {
             // steps {
-               // Destroy the infrastructure (optional)
-                // sh 'terraform destroy -auto-approve'
+                // Change directory to the infra folder
+                dir('infra') {
+                   // Destroy the infrastructure (optional)
+                    // sh 'terraform destroy -auto-approve'
+                //}
             // }
         // }
     }
