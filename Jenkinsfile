@@ -38,14 +38,17 @@ pipeline {
             }
         }
 
-        // stage('Terraform Destroy') {
-            // steps {
+        stage('Terraform Destroy') {
+            steps {
                 // Change directory to the infra folder
-                //dir('infra') {
+                dir('infra') {
                    // Destroy the infrastructure (optional)
-                    // sh 'terraform destroy -auto-approve'
-                //}
-            // }
-        // }
+                    sh 'terraform destroy -auto-approve'
+                }
+            }
+            input {
+              message 'Want to fail the pileline'
+            }
+        }
     }
 }
