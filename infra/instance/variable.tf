@@ -37,3 +37,9 @@ variable "tag_key" {
 variable "tag_values" {
   type  = list(string)
 }
+variable "bastion_security_group" {
+  type = string
+}
+variable "web_instance_count" {
+  type = number
+}

@@ -1,6 +1,6 @@
 # AWS Region and Availability Zone
 variable "aws_region" {
-  type    = string
+  type = string
 }
 
 # All traffic cidr block 
@@ -9,14 +9,17 @@ variable "cidr_blocks" {
 }
 #=================================================================================#
 # VPC BLOCK
-variable "vpc_cidr" {
-  type    = string
-}
-variable "instance_tenency" {
-  type    = string
-}
-variable "vpc_tag" {
-  type    = string
+# variable "vpc_cidr" {
+  # type = string
+# }
+# variable "instance_tenency" {
+  # type = string
+# }
+# variable "vpc_tag" {
+  # type = string
+# }
+variable "vpc_id" {
+  type = string
 }
 #=================================================================================#
 # SUBNET BLOCK
@@ -85,22 +88,28 @@ variable "ha_sg_name" {
   type = string
 }
 variable "ha_ingress_ports" {
-  type        = list(number)
+  type = list(number)
 }
 variable "egress_ports" {
-  type        = list(number)
+  type = list(number)
 }
 variable "ingress_protocol" {
   type = string
 }
 variable "egress_protocol" {
-  type  = string
+  type = string
 }
 variable "web_sg_name" {
   type = string
 }
 variable "web_ingress_ports" {
-  type        = list(number)
+  type = list(number)
+}
+variable "bastion_sec_groups_name" {
+  type = string
+}
+variable "bastion_ingress_ports" {
+  type  = list(string)
 }
 #=================================================================================#
 # INSTANCE
@@ -124,6 +133,9 @@ variable "instance_tag_key" {
 variable "instance_tag_value" {
   type = list(string)
 }
+variable "web_instance_count" {
+  type = number
+}
 #=================================================================================#
 # TARGET GROUP
 variable "ha_tg_name" {
@@ -136,8 +148,8 @@ variable "ha_tg_protocol" { # "HTTP"
 # LOAD BALANCER
 variable "ha_lb_name" {
 }
-variable "ha_lb_type" { 
+variable "ha_lb_type" {
 }
-variable "ha_lb_port" { 
+variable "ha_lb_port" {
 }
 

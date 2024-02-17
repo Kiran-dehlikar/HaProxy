@@ -27,3 +27,9 @@ variable "web_sec_groups_name" {
 variable "web_ingress_ports" {
   type  = list(string)
 }
+variable "bastion_sec_groups_name" {
+  type = string
+}
+variable "bastion_ingress_ports" {
+  type  = list(string)
+}

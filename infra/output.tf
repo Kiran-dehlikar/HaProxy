@@ -1,6 +1,6 @@
-output "vpc_id" {
-  value = module.vpc.vpc_id_out
-}
+# output "vpc_id" {
+  # value = module.vpc.vpc_id_out
+# }
 output "pub_subnets" {
   value = module.subnet.public_subnet_out
 }
