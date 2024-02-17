@@ -1,9 +1,9 @@
 pipeline {
     agent any
     environment {
-        AWS_ACCESS_KEY_ID     = credentials('access_key')
-        AWS_SECRET_ACCESS_KEY = credentials('secret-access-key')
-        AWS_DEFAULT_REGION    = 'ap-northeast-1'
+        AWS_ACCESS_KEY_ID     = credentials('kiran_access_key')
+        AWS_SECRET_ACCESS_KEY = credentials('kiran_secret-key')
+        // AWS_DEFAULT_REGION    = 'ap-northeast-1'
     }
     stages {
         stage('Clone') {
@@ -38,7 +38,7 @@ pipeline {
                 // Change directory to the infra folder
                 dir('infra') {
                     // Apply the changes
-                    sh 'terraform apply -auto-approve'
+                    sh 'terraform apply --auto-approve'
                 }
             }
         }
@@ -48,7 +48,7 @@ pipeline {
                 // Change directory to the infra folder
                 dir('infra') {
                    // Destroy the infrastructure (optional)
-                    sh 'terraform destroy -auto-approve'
+                    sh 'terraform destroy --auto-approve'
                 }
             }
             input {
