@@ -22,7 +22,8 @@ private_subnet_cidr = ["10.0.1.128/26", "10.0.1.192/26"]
 private_subnet_tag  = ["ha-pri-sub-1", "ha-pri-sub-2"]
 #=================================================================================#
 # IGW Gateway
-igw_tag = "ha-igw"
+#igw_tag = "ha-igw"
+igw_id  = "igw-02f80f4806b3cfeed"
 #=================================================================================#
 # NAT Gateway
 nat_tag = "ha-nat"

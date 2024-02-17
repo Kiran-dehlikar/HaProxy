@@ -15,12 +15,12 @@ module "subnet" {
   private_subnet_cidr = var.private_subnet_cidr
   private_subnet_tag  = var.private_subnet_tag
 }
-module "igw" {
-  source  = "./igw"
-  myvpc   = var.vpc_id
+# module "igw" {
+  # source  = "./igw"
+  # myvpc   = var.vpc_id
   #myvpc   = module.vpc.vpc_id_out
-  igw_tag = var.igw_tag
-}
+  # igw_tag = var.igw_tag
+# }
 
 module "nat" {
   source         = "./nat"
@@ -33,7 +33,8 @@ module "route_table" {
   myvpc             = var.vpc_id
   #myvpc             = module.vpc.vpc_id_out
   cidr_blocks       = var.cidr_blocks
-  myigw             = module.igw.igw_out
+  #myigw             = module.igw.igw_out
+  myigw = var.igw_id
   mynat             = module.nat.nat_out
   public_subnets    = module.subnet.public_subnet_out
   public_route_tag  = var.public_route_tag
