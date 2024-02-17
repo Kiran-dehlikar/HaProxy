@@ -50,7 +50,7 @@ bastion_sec_groups_name = "bastion-sg"
 # INSTANCE 
 public_instance_tag = "bashian-host"
 ha_instance_tag     = ["haproxy-1", "haproxy-2"]
-web_instance_count  = 4
+web_instance_count  = 2
 web_instance_tag    = ["web-1", "web-2","web-3","web-4"]
 instance_type       = "t2.micro"
 instance_tag_key    = "Name"
