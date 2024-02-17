@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         AWS_ACCESS_KEY_ID     = credentials('kiran_access_key')
-        AWS_SECRET_ACCESS_KEY = credentials('kiran_secret-key')
+        AWS_SECRET_ACCESS_KEY = credentials('kiran_secret_key')
         // AWS_DEFAULT_REGION    = 'ap-northeast-1'
     }
     stages {
