@@ -14,3 +14,12 @@ resource "local_file" "private_key_file" {
   content  = tls_private_key.private_key.private_key_pem
   filename = var.private_key_name
 }
+resource "null_resource" "change_permissions" {
+  triggers = {
+    private_key_content = local_file.private_key_file.content
+  }
+
+  provisioner "local-exec" {
+    command = "chmod 400 ./${var.private_key_name}"
+  }
+}
