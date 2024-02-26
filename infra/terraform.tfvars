@@ -1,6 +1,6 @@
-aws_region = "ap-northeast-1"
-pub_aws_az = "ap-northeast-1a"
-pri_aws_az = ["ap-northeast-1c", "ap-northeast-1d"]
+aws_region = "us-east-1"
+pub_aws_az = "us-east-1a"
+pri_aws_az = ["us-east-1a", "us-east-1b"]
 #=================================================================================#
 # AMI 
 ami_image_flavor = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
@@ -9,7 +9,7 @@ ami_image_virt_type = "hvm"
 ami_image_owner_id  = "099720109477" # Canonical
 #=================================================================================#
 # VPC
-vpc_id = "vpc-0e75c46c274bc15c8"
+vpc_id = "vpc-0f71264ff3b6d914d"
 cidr_blocks      = "0.0.0.0/0"
 #vpc_cidr         = "10.0.1.0/24"
 #instance_tenency = "default"
@@ -23,7 +23,7 @@ private_subnet_tag  = ["ha-pri-sub-1", "ha-pri-sub-2"]
 #=================================================================================#
 # IGW Gateway
 #igw_tag = "ha-igw"
-igw_id  = "igw-02f80f4806b3cfeed"
+igw_id  = "igw-007bfdcfaa1416337"
 #=================================================================================#
 # NAT Gateway
 nat_tag = "ha-nat"
@@ -39,7 +39,7 @@ private_key_name = "ha_key.pem"
 #=================================================================================#
 # SECURITY GROUP
 ha_sg_name        = "ha-sg"
-ha_ingress_ports  = [22, 80, 443, 8404]
+ha_ingress_ports  = [22, 80, 443]
 egress_ports      = [0]
 ingress_protocol  = "tcp"
 egress_protocol   = "-1"
