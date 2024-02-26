@@ -52,12 +52,13 @@ pipeline {
                 }
             }
         }
+        stages {
         stage('Confirm Action') {
             steps {
                 // Ask for confirmation before proceeding
                 input message: 'Do you want to apply or destroy the infrastructure?',
                       parameters: [
-                          choice(name: 'ACTION', choices: 'Apply\nDestroy', description: 'Select Action')
+                          choice(name: 'ACTION', choices: ['Apply', 'Destroy'], description: 'Select Action')
                       ]
             }
         }
@@ -68,12 +69,13 @@ pipeline {
                 dir('infra') {
                     // Apply or destroy the infrastructure based on the user's choice
                     script {
-                        if (params.ACTION == 'Apply') {
+                        def action = params.ACTION.toUpperCase()
+                        if (action == 'APPLY') {
                             sh 'terraform apply --auto-approve'
-                        } else if (params.ACTION == 'Destroy') {
+                        } else if (action == 'DESTROY') {
                             sh 'terraform destroy --auto-approve'
                         } else {
-                            echo "Invalid action selected"
+                            error "Invalid action selected: ${action}"
                         }
                     }
                 }
