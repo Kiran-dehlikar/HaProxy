@@ -3,10 +3,10 @@ pipeline {
     environment {
         AWS_ACCESS_KEY_ID     = credentials('kiran_access_key')
         AWS_SECRET_ACCESS_KEY = credentials('kiran_secret_key')
-        // AWS_DEFAULT_REGION    = 'ap-northeast-1'
+        // AWS_DEFAULT_REGION    = 'us-east-1'
     }
     stages {
-        stage('Clone') {
+        stage('Cloning repo') {
             steps {
                 // Checkout your source code from version control
                 git 'https://github.com/Kiran-dehlikar/HaProxy.git'
@@ -53,6 +53,22 @@ pipeline {
             }
             input {
               message 'Want to fail the pileline'
+            }
+        }
+        stage('Running Ansible Roles') {
+            parallel {
+                stage('HaProxy Role') {
+                    steps {
+                        // Run your first Ansible role
+                        sh 'ansible-playbook -i aws_ec2.yml haproxy_setup.yml -vv'
+                    }
+                }
+                stage('Nginx Role') {
+                    steps {
+                        // Run your second Ansible role
+                        sh 'ansible-playbook -i aws_ec2.yml nginx_setup.yml'
+                    }
+                }
             }
         }
     }
