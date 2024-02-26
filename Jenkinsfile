@@ -52,7 +52,6 @@ pipeline {
                 }
             }
         }
-
         stage('Confirm Action') {
             steps {
                 // Ask for confirmation before proceeding
@@ -71,8 +70,10 @@ pipeline {
                     script {
                         if (params.ACTION == 'Apply') {
                             sh 'terraform apply --auto-approve'
-                        } else {
+                        } else if (params.ACTION == 'Destroy') {
                             sh 'terraform destroy --auto-approve'
+                        } else {
+                            echo "Invalid action selected"
                         }
                     }
                 }
