@@ -64,11 +64,15 @@ pipeline {
 
         stage('Terraform Apply or Destroy') {
             steps {
+                // Print the selected action for debugging
+                echo "Selected action: ${params.ACTION}"
+
                 // Change directory to the infra folder
                 dir('infra') {
                     // Apply or destroy the infrastructure based on the user's choice
                     script {
                         def action = params.ACTION.toUpperCase()
+                        echo "Action after conversion: ${action}"
                         if (action == 'APPLY') {
                             sh 'terraform apply --auto-approve'
                         } else if (action == 'DESTROY') {
