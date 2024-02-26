@@ -22,6 +22,8 @@ frontend http_front
   bind *:{{ haproxy_listen_ports[0] }}
   bind *:{{ haproxy_listen_ports[1] }}
   mode http
+  stats uri /haproxy_stats
+  stats refresh 10s
   default_backend webserver
 
 backend webserver
@@ -31,10 +33,4 @@ backend webserver
   server {{ hostvars[host].inventory_hostname }} {{ hostvars[host].ansible_host }}:80 check
   {% endfor %}
   # Add more backend server configurations as needed
-
-### STATS CONFIGURATION ####
-frontend stats
-    bind *:8404
-    stats enable
-    stats uri /haproxy_stats
-    stats refresh 10s
+    
