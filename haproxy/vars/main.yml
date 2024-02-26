@@ -1,0 +1,20 @@
+---
+# vars file for haproxy
+
+haproxy_package: "haproxy"
+haproxy_service: "haproxy"
+haproxy_version: "2.4.*"  # Change this to the desired version
+
+haproxy_config_template: "haproxy.cfg.j2"
+haproxy_config_dest: "/etc/haproxy/haproxy.cfg"
+
+haproxy_listen_ports:
+  - 80
+  - 443
+
+# haproxy_backend_server: 
+  # - 13.127.152.26:8081
+  # - 13.127.152.26:8082
+  # - 13.127.152.26:8083
+
+PathToTemplates: /var/lib/jenkins/workspace/haproxy/nginx/templates

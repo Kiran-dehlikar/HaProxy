@@ -1,0 +1,32 @@
+---
+
+- name: Install Nginx
+  apt:
+    update_cache: yes
+    name: nginx
+    state: present
+
+- name: Create website's configuration
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  loop:
+    - { src: "{{ PathToTemplates }}/website1.conf.j2", dest: "{{ NginxConfigLocation }}/mybackend" }
+  notify: Restart Nginx
+
+- name: Create symlink to sites-enabled
+  file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    state: link                                                             
+  loop:
+    - { src: "{{ NginxConfigLocation }}/mybackend", dest: "{{ NginxConfigLink }}/mybackend" }
+  notify: Restart Nginx
+
+- name: Create mybackend website's
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  loop:
+    - { src: "{{ PathToTemplates }}/website1.html.j2", dest: "{{ NginxWebsiteLocation }}/index.html" }
+  notify: Restart Nginx

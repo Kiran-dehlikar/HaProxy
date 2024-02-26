@@ -1,0 +1,13 @@
+# website1 configuration
+
+server {
+    listen 80;
+    server_name "{{inventory_hostname }}";
+
+    location / {
+        # Configuration for website1
+        root /var/www/html/index.html;
+        index index.html index.htm index.nginx-debian.html;
+
+    }
+}

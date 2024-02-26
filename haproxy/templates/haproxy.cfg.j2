@@ -1,0 +1,43 @@
+# Your HAProxy configuration goes here
+global
+  log /dev/log local0
+  log /dev/log local1 notice
+  chroot /var/lib/haproxy
+  stats socket /run/haproxy/admin.sock mode 660 level admin
+  stats timeout 30s
+  user haproxy
+  group haproxy
+  daemon
+
+defaults
+  log global
+  mode http
+  option httplog
+  option dontlognull
+  timeout connect 5000
+  timeout client 50000
+  timeout server 50000
+
+frontend http_front
+  bind *:{{ haproxy_listen_ports[0] }}
+  bind *:{{ haproxy_listen_ports[1] }}
+  mode http
+  default_backend webserver
+
+backend webserver
+  mode http
+  balance roundrobin
+  {% for host in groups['tag_Environment_Webserver'] %}
+  server {{ hostvars[host].inventory_hostname }} {{ hostvars[host].ansible_host }}:80 check
+  {% endfor %}
+  # Add more backend server configurations as needed
+  #server web1 {{ haproxy_backend_server[0] }} check
+  #server web2 {{ haproxy_backend_server[1] }} check
+  #server web3 {{ haproxy_backend_server[2] }} check
+
+### STATS CONFIGURATION ####
+frontend stats
+    bind *:8404
+    stats enable
+    stats uri /haproxy_stats
+    stats refresh 10s

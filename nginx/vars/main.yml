@@ -1,0 +1,4 @@
+---
+# vars file for nginx
+
+PathToTemplates: /var/lib/jenkins/workspace/test/nginx/templates

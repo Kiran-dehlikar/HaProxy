@@ -1,0 +1,6 @@
+---
+- hosts: mysite.com  # This host should be present in inventry file
+  become: true
+  remote_user: root
+  roles:
+    - haproxy

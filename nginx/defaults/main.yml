@@ -1,0 +1,7 @@
+---
+# defaults file for haproxy
+
+NginxConfigLocation: /etc/nginx/sites-available
+NginxConfigLink: /etc/nginx/sites-enabled
+NginxWebsiteLocation: /var/www/html
+

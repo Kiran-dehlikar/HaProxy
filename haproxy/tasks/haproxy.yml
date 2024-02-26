@@ -1,0 +1,24 @@
+---
+- name: Installing dependencies
+  apt:
+    update_cache: yes
+    name: software-properties-common
+    state: present
+
+- name: Adding HAProxy PPA repository
+  apt_repository:
+    repo: ppa:vbernat/haproxy-2.4
+    state: present
+    
+- name: Installing HAProxy version "{{ haproxy_version }}"
+  package:
+    name: "{{ haproxy_package }}={{ haproxy_version }}"
+    state: present
+  #ignore_errors: yes
+
+- name: Creating HAProxy configuration file
+  template:
+    src: "{{ haproxy_config_template }}"
+    dest: "{{ haproxy_config_dest }}"
+  notify: Restart Haproxy
+

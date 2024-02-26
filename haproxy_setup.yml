@@ -1,0 +1,5 @@
+---
+- hosts: tag_Environment_Haproxy
+  become: yes
+  roles:
+    - haproxy

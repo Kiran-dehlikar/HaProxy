@@ -1,0 +1,5 @@
+---
+- hosts: tag_Environment_Webserver
+  become: yes
+  roles:
+    - nginx
