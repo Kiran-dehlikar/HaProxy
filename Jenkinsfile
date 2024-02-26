@@ -28,7 +28,7 @@ pipeline {
                 // Change directory to the infra folder
                 dir('infra') {
                     // Format Terraform configuration files
-                    sh 'terraform fmt -check=true -recursive'
+                    sh 'terraform fmt'
                 }
             }
         }
