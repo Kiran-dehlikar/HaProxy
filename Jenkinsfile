@@ -61,7 +61,7 @@ pipeline {
                 }
             }
             input {
-                message: "Want to proceed to Apply ?"
+                message: 'Do you want to apply the Terraform changes?'
             }
         }
         stage('Running Ansible Roles') {
