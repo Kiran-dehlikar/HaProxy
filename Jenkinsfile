@@ -22,7 +22,27 @@ pipeline {
                 }
             }
         }
-
+        
+        stage('Terraform Format') {
+            steps {
+                // Change directory to the infra folder
+                dir('infra') {
+                    // Format Terraform configuration files
+                    sh 'terraform fmt -check=true -recursive'
+                }
+            }
+        }
+        
+        stage('Terraform Validate') {
+            steps {
+                // Change directory to the infra folder
+                dir('infra') {
+                    // Validate Terraform code
+                    sh 'terraform validate'
+                }
+            }
+        }
+        
         stage('Terraform Plan') {
             steps {
                 // Change directory to the infra folder
@@ -33,26 +53,29 @@ pipeline {
             }
         }
 
-        stage('Terraform Apply') {
+        stage('Confirm Action') {
             steps {
-                // Change directory to the infra folder
-                dir('infra') {
-                    // Apply the changes
-                    sh 'terraform apply --auto-approve'
-                }
+                // Ask for confirmation before proceeding
+                input message: 'Do you want to apply or destroy the infrastructure?',
+                      parameters: [
+                          choice(name: 'ACTION', choices: 'Apply\nDestroy', description: 'Select Action')
+                      ]
             }
         }
 
-        stage('Terraform Destroy') {
+        stage('Terraform Apply or Destroy') {
             steps {
                 // Change directory to the infra folder
                 dir('infra') {
-                   // Destroy the infrastructure (optional)
-                    sh 'terraform destroy --auto-approve'
+                    // Apply or destroy the infrastructure based on the user's choice
+                    script {
+                        if (params.ACTION == 'Apply') {
+                            sh 'terraform apply --auto-approve'
+                        } else {
+                            sh 'terraform destroy --auto-approve'
+                        }
+                    }
                 }
-            }
-            input {
-              message 'Want to fail the pileline'
             }
         }
         stage('Running Ansible Roles') {
@@ -60,7 +83,7 @@ pipeline {
                 stage('HaProxy Role') {
                     steps {
                         // Run your first Ansible role
-                        sh 'ansible-playbook -i aws_ec2.yml haproxy_setup.yml -vv'
+                        sh 'ansible-playbook -i aws_ec2.yml haproxy_setup.yml -v --extra-vars "action=${params.ACTION}"'
                     }
                 }
                 stage('Nginx Role') {
