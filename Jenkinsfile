@@ -57,7 +57,7 @@ pipeline {
                 // Change directory to the infra folder
                 dir('infra') {
                     // Apply the plan
-                    sh 'terraform apply --auto-approve'
+                    sh 'terraform destroy --auto-approve'
                 }
             }
             input {
