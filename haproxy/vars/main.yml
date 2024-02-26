@@ -10,6 +10,6 @@ haproxy_config_dest: "/etc/haproxy/haproxy.cfg"
 
 haproxy_listen_ports:
   - 80
-  - 443
+#  - 443
   
 PathToTemplates: /var/lib/jenkins/workspace/haproxy/nginx/templates
