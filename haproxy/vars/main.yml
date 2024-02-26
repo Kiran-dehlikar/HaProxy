@@ -11,10 +11,5 @@ haproxy_config_dest: "/etc/haproxy/haproxy.cfg"
 haproxy_listen_ports:
   - 80
   - 443
-
-# haproxy_backend_server: 
-  # - 13.127.152.26:8081
-  # - 13.127.152.26:8082
-  # - 13.127.152.26:8083
-
+  
 PathToTemplates: /var/lib/jenkins/workspace/haproxy/nginx/templates
