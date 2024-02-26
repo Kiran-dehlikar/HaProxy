@@ -31,9 +31,6 @@ backend webserver
   server {{ hostvars[host].inventory_hostname }} {{ hostvars[host].ansible_host }}:80 check
   {% endfor %}
   # Add more backend server configurations as needed
-  #server web1 {{ haproxy_backend_server[0] }} check
-  #server web2 {{ haproxy_backend_server[1] }} check
-  #server web3 {{ haproxy_backend_server[2] }} check
 
 ### STATS CONFIGURATION ####
 frontend stats
