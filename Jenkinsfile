@@ -52,7 +52,6 @@ pipeline {
                 }
             }
         }
-        stages {
         stage('Confirm Action') {
             steps {
                 // Ask for confirmation before proceeding
