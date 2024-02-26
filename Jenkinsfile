@@ -52,36 +52,16 @@ pipeline {
                 }
             }
         }
-        stage('Confirm Action') {
+        stage('Terraform Apply') {
             steps {
-                // Ask for confirmation before proceeding
-                input message: 'Do you want to apply or destroy the infrastructure?',
-                      parameters: [
-                          choice(name: 'ACTION', choices: ['Apply', 'Destroy'], description: 'Select Action')
-                      ]
-            }
-        }
-
-        stage('Terraform Apply or Destroy') {
-            steps {
-                // Print the selected action for debugging
-                echo "Selected action: ${params.ACTION}"
-
                 // Change directory to the infra folder
                 dir('infra') {
-                    // Apply or destroy the infrastructure based on the user's choice
-                    script {
-                        def action = params.ACTION.toUpperCase()
-                        echo "Action after conversion: ${action}"
-                        if (action == 'APPLY') {
-                            sh 'terraform apply --auto-approve'
-                        } else if (action == 'DESTROY') {
-                            sh 'terraform destroy --auto-approve'
-                        } else {
-                            error "Invalid action selected: ${action}"
-                        }
-                    }
+                    // Apply the plan
+                    sh 'terraform apply --auto-approve'
                 }
+            }
+            input {
+                message: "Want to proceed to Apply ?"
             }
         }
         stage('Running Ansible Roles') {
