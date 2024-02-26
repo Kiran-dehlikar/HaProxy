@@ -20,7 +20,7 @@ defaults
 
 frontend http_front
   bind *:{{ haproxy_listen_ports[0] }}
-  bind *:{{ haproxy_listen_ports[1] }}
+#  bind *:{{ haproxy_listen_ports[1] }}
   mode http
   stats uri /haproxy_stats
   stats refresh 10s
