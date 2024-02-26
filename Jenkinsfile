@@ -79,17 +79,20 @@ pipeline {
             }
         }
         stage('Running Ansible Roles') {
+            input {
+                message "Proceed to run Ansible Roles?"
+            }
             parallel {
                 stage('HaProxy Role') {
                     steps {
                         // Run your first Ansible role
-                        sh 'ansible-playbook -i aws_ec2.yml haproxy_setup.yml -v --extra-vars "action=${params.ACTION}"'
+                        sh 'ansible-playbook -i aws_ec2.yml haproxy_setup.yml -v'
                     }
                 }
                 stage('Nginx Role') {
                     steps {
                         // Run your second Ansible role
-                        sh 'ansible-playbook -i aws_ec2.yml nginx_setup.yml'
+                        sh 'ansible-playbook -i aws_ec2.yml nginx_setup.yml -v'
                     }
                 }
             }
