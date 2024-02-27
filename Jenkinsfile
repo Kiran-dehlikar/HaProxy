@@ -52,28 +52,28 @@ pipeline {
                 }
             }
         }
-        stage('apply or destroy') {
+        stage('Terraform Apply or Destroy') {
             steps {
-                // Prompt for user input
-                input message: 'Do you want to run apply or destroy?', parameters: [
-                    choice(name: 'STAGE_CHOICE', choices: ['apply', 'destroy'], description: 'Select the stage to run')
+                input message: 'Do you want to apply or destroy the Terraform configuration?', parameters: [
+                choice(name: 'ACTION', choices: ['Apply', 'Destroy'], description: 'Select Action')
                 ]
+            script {
+                echo "Selected Action: ${params.ACTION}"
             }
-            post {
-                always {
-                    // Execute either Stage 3 or Stage 4 based on user choice
-                    script {
-                        if (params.STAGE_CHOICE == 'apply') {
-                            // Execute Stage 3
-                            sh 'terraform apply --auto-approve'
-                        } else {
-                            // Execute Stage 4
-                            sh 'terraform destroy --auto-approve'
-                        }
+        }
+        post {
+            always {
+                // Execute either Terraform apply or destroy based on user choice
+                script {
+                    if (params.ACTION == 'Apply') {
+                        sh 'terraform apply --auto-approve'
+                    } else {
+                        sh 'terraform destroy --auto-approve'
                     }
                 }
             }
-        }    
+        }
+    }  
         stage('Running Ansible Roles') {
             input {
                 message "Proceed to run Ansible Roles?"
