@@ -13,6 +13,10 @@ variable "ha_instance_id" { # "instance_id"
 }
 variable "ha_lb_port" { # 80
 }
-variable "subnet_ids" {
-  type = list(string)
+variable "private_subnet_id" {
+  type = string
+}
+
+variable "public_subnet_id" {
+  type = string
 }
