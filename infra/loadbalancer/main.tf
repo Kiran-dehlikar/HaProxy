@@ -4,7 +4,7 @@ resource "aws_lb" "my_load_balancer" {
   load_balancer_type = var.ha_lb_type
 
   security_groups    = [var.web_sec_groups]  # Set your security group ID
-  subnets            =  var.subnet_ids  # Set your subnet IDs
+  subnets            =  [var.public_subnet_id , var.private_subnet_id]
 
   enable_deletion_protection = false  # Set to true if you want to enable deletion protection
 }
