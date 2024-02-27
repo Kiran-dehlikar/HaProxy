@@ -12,4 +12,4 @@ haproxy_listen_ports:
   - 80
   - 443
   
-PathToTemplates: /var/lib/jenkins/workspace/haproxy/nginx/templates
+PathToTemplates: /var/lib/jenkins/workspace/HaProxy/haproxy/templates
