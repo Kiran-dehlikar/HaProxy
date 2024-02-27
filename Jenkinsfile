@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    parameters {
+        choice(name: 'action', choices: ['apply', 'destroy'], description: 'Select the action to perform')
+    }
     environment {
         AWS_ACCESS_KEY_ID     = credentials('kiran_access_key')
         AWS_SECRET_ACCESS_KEY = credentials('kiran_secret_key')
@@ -52,28 +55,21 @@ pipeline {
                 }
             }
         }
-        stage('Terraform Apply or Destroy') {
+        stage('Apply / Destroy') {
             steps {
-                input message: 'Do you want to apply or destroy the Terraform configuration?', parameters: [
-                choice(name: 'ACTION', choices: ['Apply', 'Destroy'], description: 'Select Action')
-                ]
-            script {
-                echo "Selected Action: ${params.ACTION}"
-            }
-        }
-        post {
-            always {
-                // Execute either Terraform apply or destroy based on user choice
                 script {
-                    if (params.ACTION == 'Apply') {
-                        sh 'terraform apply --auto-approve'
+                    if (params.action == 'apply') {
+                        sh 'terraform apply -auto-approve'
+                    } else if (params.action == 'destroy') {
+                        input message: 'Do you want to destroy the infrastructure?',
+                              parameters: [booleanParam(name: 'confirm', defaultValue: false, description: 'Confirm destroy')]
+                        sh 'terraform destroy -auto-approve'
                     } else {
-                        sh 'terraform destroy --auto-approve'
+                        error "Invalid action selected. Please choose either 'apply' or 'destroy'."
                     }
                 }
             }
         }
-    }  
         stage('Running Ansible Roles') {
             input {
                 message "Proceed to run Ansible Roles?"
