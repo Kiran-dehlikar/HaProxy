@@ -73,6 +73,7 @@ pipeline {
                     }
                 }
             }
+        }    
         stage('Running Ansible Roles') {
             input {
                 message "Proceed to run Ansible Roles?"
