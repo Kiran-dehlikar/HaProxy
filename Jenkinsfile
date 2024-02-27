@@ -52,18 +52,27 @@ pipeline {
                 }
             }
         }
-        stage('Terraform Apply') {
+        stage('apply or destroy') {
             steps {
-                // Change directory to the infra folder
-                dir('infra') {
-                    // Apply the plan
-                    sh 'terraform apply --auto-approve'
+                // Prompt for user input
+                input message: 'Do you want to run apply or destroy?', parameters: [
+                    choice(name: 'STAGE_CHOICE', choices: ['apply', 'destroy'], description: 'Select the stage to run')
+                ]
+            }
+            post {
+                always {
+                    // Execute either Stage 3 or Stage 4 based on user choice
+                    script {
+                        if (params.STAGE_CHOICE == 'apply') {
+                            // Execute Stage 3
+                            sh 'terraform apply --auto-approve'
+                        } else {
+                            // Execute Stage 4
+                            sh 'terraform destroy --auto-approve'
+                        }
+                    }
                 }
             }
-            input {
-                message 'Do you want to proceed?'
-            }
-        }
         stage('Running Ansible Roles') {
             input {
                 message "Proceed to run Ansible Roles?"
