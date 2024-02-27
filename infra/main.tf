@@ -109,6 +109,7 @@ module "load_balancer" {
   ha_lb_port     = var.ha_lb_port
   ha_tg_arn      = module.target_group.target_group_arn
   ha_instance_id = module.instance_launch.haProxy_instance_id_out
-  subnet_ids     = module.subnet.private_subnet_out
+  private_subnet_id  = module.subnet.us-east-1b_az_subnet_id
+  public_subnet_id = module.subnet.public_subnet_out
   web_sec_groups = module.sec_groups.web_security_groups_out
 }
