@@ -57,15 +57,17 @@ pipeline {
         }
         stage('Apply / Destroy') {
             steps {
-                script {
-                    if (params.action == 'apply') {
-                        sh 'terraform apply -auto-approve'
-                    } else if (params.action == 'destroy') {
-                        input message: 'Do you want to destroy the infrastructure?',
-                              parameters: [booleanParam(name: 'confirm', defaultValue: false, description: 'Confirm destroy')]
-                        sh 'terraform destroy -auto-approve'
-                    } else {
-                        error "Invalid action selected. Please choose either 'apply' or 'destroy'."
+                dir('infra') {
+                    script {
+                        if (params.action == 'apply') {
+                            sh 'terraform apply -auto-approve'
+                        } else if (params.action == 'destroy') {
+                            input message: 'Do you want to destroy the infrastructure?',
+                                  parameters: [booleanParam(name: 'confirm', defaultValue: false, description: 'Confirm destroy')]
+                            sh 'terraform destroy -auto-approve'
+                        } else {
+                            error "Invalid action selected. Please choose either 'apply' or 'destroy'."
+                        }
                     }
                 }
             }
