@@ -1,0 +1,105 @@
+
+===xxx======HaProxy=======xxx===
+
+Dynamic Configuration
+https://www.haproxy.com/blog/dynamic-configuration-haproxy-runtime-api
+
+listen stats
+    bind :80   # Choose the appropriate port for the Runtime API
+    mode http
+    stats enable
+    stats uri /haproxy_stats
+    stats realm HAProxy\ Statistics
+    stats auth admin:admin123   # Set your desired username and password
+	
+================================================
+
+Check/validate haproxy configuration
+
+sudo haproxy -c -f /etc/haproxy/haproxy.cfg
+
+===============================================
+touch /var/run/haproxy.sock
+
+global
+  log /dev/log    local0
+  log /dev/log    local1 notice
+  stats socket /var/run/haproxy.sock mode 666 level admin
+
+echo "help" | socat stdio /var/run/haproxy.sock
+
+watch 'echo "show stat" | socat stdio /var/run/haproxy.sock | cut -d "," -f 1-2,5-10,34-36 | column -s, -t'
+==================================================================================
+# Drain SERVER
+echo "set server backend_servers/server1 state drain" | sudo socat stdio /var/run/haproxy.sock
+drain/ready
+
+# to stop the health checks, then use the "disable health"
+echo "disable health backend_servers/server1" | sudo socat stdio /var/run/haproxy.sock
+==========================================================================
+
+# Change weight in proportion to other servers
+echo "set server backend_servers/server3 weight 100" | sudo socat stdio /var/run/haproxy.sock
+
+============================================================================================
+
+# Session Persistent
+cookie SERVERID insert indirect nocache
+server server1 192.168.1.42:81 check cookie server1
+
+===============================================
+touch /etc/haproxy/whitelist
+
+DDOS protection
+
+# Stick table definition  
+stick-table type ip size 1m expire 15m store gpt0,http_req_rate(10s)
+http-request allow if { src -f /etc/haproxy/whitelist.lst }
+http-request track-sc0 src
+acl abuse src_http_req_rate ge 5
+http-request sc-set-gpt0(0) 1 if abuse 
+http-request deny if { sc0_get_gpt0 ge 1 }  
+
+watch 'echo "show table webserver" | socat stdio /var/run/haproxy.sock | cut -d "," -f 1-2,5-10,34-36 | column -s, -t'
+
+====================================================================================================
+Load Testing
+sudo apt install apache2-utils
+
+ab -n 10000 -c 1000 http://192.168.1.42/
+
+=======================================================================================
+
+Maintainance mode / Emergency mode
+
+acl is_maintenance nbsrv(backend_servers) eq 0
+use_backend maintenance if is_maintenance
+
+backend maintenance
+    mode http
+    server maintenance 192.168.1.42:9000 check
+	
+========================================================================================
+
+ /var/log/haproxy.log
+
+Path based routing
+
+acl path_service1 path_beg /service1
+use_backend backend_servers1 if path_service1
+
+backend backend_servers1
+    mode http
+    server server2 192.168.1.42:82 check
+
+================================================================================================
+    acl path_service1 path_beg /service1
+    use_backend backend_servers1 if { path /service1 } || { path_beg /service1/ }
+	
+backend backend_servers1
+    mode http
+    http-request replace-path /service1(/)?(.*) /\2
+    server server2 192.168.1.42:82 check
+	
+==================================================================================================
+
